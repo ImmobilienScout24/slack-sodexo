@@ -7,7 +7,8 @@ functionName="Sodexo"
 
 echo "Build binary"
 sh sbt assembly
-echo "Delete funtion $funtionName"
-aws lambda delete-function --function-name "$functionName"
-echo "Create funtion $funtionName"
-aws lambda create-function --timeout 15 --function-name "$functionName" --runtime "java8" --role "arn:aws:iam::285072396330:role/lambda_basic_execution" --handler "de.is24.Sodexo::handleCall" --zip-file "fileb://target/scala-2.11/slack-sodexo-assembly-0.1.1-SNAPSHOT.jar"
+echo "update function $functionName"
+aws --region eu-west-1 lambda update-function-code --function-name "$functionName" --zip-file "fileb://target/scala-2.11/slack-sodexo-assembly-0.1.1-SNAPSHOT.jar" || {
+    echo "update failed, creating the function"
+    aws --region eu-west-1 lambda create-function --timeout 15 --function-name "$functionName" --runtime "java8" --role "arn:aws:iam::285072396330:role/lambda_basic_execution" --handler "de.is24.Sodexo::handleCall" --zip-file "fileb://target/scala-2.11/slack-sodexo-assembly-0.1.1-SNAPSHOT.jar"
+}
