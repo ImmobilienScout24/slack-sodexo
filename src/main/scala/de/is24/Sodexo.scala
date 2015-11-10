@@ -7,6 +7,6 @@ class Sodexo {
   def handleCall(param: String, context: Context): String = {
     val logger = context.getLogger
     logger.log(s"received : $param")
-    "Bauer!!!"
+    "Bauer2!!!"
   }
 }
