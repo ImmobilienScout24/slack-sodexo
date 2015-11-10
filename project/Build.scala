@@ -10,7 +10,7 @@ object Build extends Build with Dependencies {
   lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
   lazy val root = Project(id = "root", base = file("."), settings = Defaults.coreDefaultSettings ++ releaseSettings ++ net.virtualvoid.sbt.graph.Plugin.graphSettings).settings(
-    name := "sodexo-command",
+    name := "slack-sodexo",
     organization := "de.is24",
     scalaVersion := "2.11.7",
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
