@@ -29,7 +29,7 @@ class Sodexo {
         downloader.download()
           .map(PdfToImageConverter.convert)
           .map(PngCropper.extractWeekdays)
-          .map(new ImageUploader(bucketName).uploadImages),
+          .flatMap(new ImageUploader(bucketName).uploadImages),
         3 minutes)
     } finally {
       logger.log("Shutting down system")
