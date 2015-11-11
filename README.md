@@ -1,5 +1,6 @@
 #Sodexo command
 [![Build Status](https://travis-ci.org/ImmobilienScout24/slack-sodexo.svg?branch=master)](https://travis-ci.org/ImmobilienScout24/slack-sodexo)
+[![FlatMap](https://img.shields.io/badge/flatmap-certified-green.svg)](https://github.com/ImmobilienScout24/slack-sodexo)
 
 # Slack integration for ImmobilienScout24 Lounge by Sodexo™
 Running
