@@ -24,10 +24,15 @@ object Starter extends App {
   ImageIOUtil.writeImage(image, "png", outputStream, ImageConstants.RESOLUTION, 1.0f)
   Files.write(Paths.get("sodexo.png"), outputStream.toByteArray, StandardOpenOption.CREATE)
 
-  PngCropper.extractWeekdays(image).foreach {
+  val weekdayImages = PngCropper.extractWeekdays(image)
+
+    weekdayImages.foreach {
     case (imagename, bytes) =>
       Files.write(Paths.get(imagename), bytes, StandardOpenOption.CREATE)
   }
+
+  val imgUploader = new ImageUploader("sodexo-slack")
+  Await.result(imgUploader.uploadImages(weekdayImages), 2 minutes)
 
   actorSystem.shutdown()
   actorSystem.awaitTermination()

@@ -11,7 +11,7 @@ import scala.concurrent.{Promise, ExecutionContext, Future}
 
 class ImageUploader(bucketName: String) {
 
-  private def uploadImages(imageNamesToRaw: Map[String, Array[Byte]])(implicit ec: ExecutionContext): Future[Unit] = {
+  def uploadImages(imageNamesToRaw: Map[String, Array[Byte]])(implicit ec: ExecutionContext): Future[Unit] = {
     val transferManager = new TransferManager(new DefaultAWSCredentialsProviderChain().getCredentials)
 
     val uploadResult = Future.sequence(imageNamesToRaw.map {
@@ -28,8 +28,8 @@ class ImageUploader(bucketName: String) {
         upload.addProgressListener(new ProgressListener {
           override def progressChanged(progressEvent: ProgressEvent): Unit = {
             progressEvent.getEventType match {
-              case ProgressEventType.TRANSFER_FAILED_EVENT => promise.failure(new Exception(s"Transfer of $imageName failed"))
-              case ProgressEventType.TRANSFER_CANCELED_EVENT => promise.failure(new Exception(s"Transfer of $imageName canceled"))
+              case ProgressEventType.TRANSFER_FAILED_EVENT => promise.tryFailure(new Exception(s"Transfer of $imageName failed"))
+              case ProgressEventType.TRANSFER_CANCELED_EVENT => promise.tryFailure(new Exception(s"Transfer of $imageName canceled"))
               case ProgressEventType.TRANSFER_COMPLETED_EVENT => promise.success(())
               case _ => ()
             }
