@@ -1,10 +1,12 @@
 package de.is24
 
-import java.nio.file.{StandardOpenOption, Paths, Files}
+import java.io.ByteArrayOutputStream
+import java.nio.file.{Files, StandardOpenOption, Paths}
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
+import org.apache.pdfbox.util.ImageIOUtil
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
@@ -18,7 +20,14 @@ object Starter extends App {
   val downloader = new MenuDownloader(http, new SoutLogger)
 
   val image = Await.result(downloader.download().map(PdfToImageConverter.convert), 25.seconds)
-  Files.write(Paths.get("sodexo.png"), image, StandardOpenOption.CREATE)
+  val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream()
+  ImageIOUtil.writeImage(image, "png", outputStream, ImageConstants.RESOLUTION, 1.0f)
+  Files.write(Paths.get("sodexo.png"), outputStream.toByteArray, StandardOpenOption.CREATE)
+
+  PngCropper.extractWeekdays(image).foreach {
+    case (imagename, bytes) =>
+      Files.write(Paths.get(imagename), bytes, StandardOpenOption.CREATE)
+  }
 
   actorSystem.shutdown()
   actorSystem.awaitTermination()
