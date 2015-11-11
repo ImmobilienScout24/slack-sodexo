@@ -9,7 +9,7 @@ trait SodexoLogger {
 }
 
 class LoggerWrapper(lambdaLogger: LambdaLogger) extends SodexoLogger {
-  override def log(message: String): Unit = lambdaLogger.log(s"${Instant.now()}: message")
+  override def log(message: String): Unit = lambdaLogger.log(s"${Instant.now()}: $message")
 }
 
 class StdoutLogger extends SodexoLogger {
