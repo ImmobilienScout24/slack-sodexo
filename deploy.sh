@@ -7,6 +7,8 @@ functionName="Sodexo"
 
 echo "Build binary"
 sh sbt assembly
+echo "create bucket"
+aws --region eu-west-1 s3 mb "s3://sodexo-slack" || echo "Bucket already exists"
 echo "update function $functionName"
 aws --region eu-west-1 lambda update-function-code --function-name "$functionName" --zip-file "fileb://target/scala-2.11/slack-sodexo-assembly-0.1.1-SNAPSHOT.jar" || {
     echo "update failed, creating the function"
