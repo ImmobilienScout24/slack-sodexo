@@ -1,5 +1,4 @@
-# for_window [class="Gnome-terminal"] border none
-rts.handler = function(event, context) {
+exports.handler = function(event, context) {
     var d = new Date();
     var weekdays = new Array(7);
     weekdays[0]=  "sunday";
