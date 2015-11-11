@@ -1,5 +1,7 @@
 package de.is24
 
+import java.nio.file.{StandardOpenOption, Paths, Files}
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
@@ -15,7 +17,9 @@ object Starter extends App {
 
   val downloader = new MenuDownloader(http, new SoutLogger)
 
-  Await.ready(downloader.download(), 25.seconds)
+  val image = Await.result(downloader.download().map(PdfToImageConverter.convert), 25.seconds)
+  Files.write(Paths.get("sodexo.png"), image, StandardOpenOption.CREATE)
+
   actorSystem.shutdown()
   actorSystem.awaitTermination()
 }
