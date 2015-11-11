@@ -3,10 +3,11 @@ package de.is24
 import java.io.ByteArrayInputStream
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
+import com.amazonaws.event.{ProgressEventType, ProgressEvent, ProgressListener}
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.transfer.TransferManager
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{Promise, ExecutionContext, Future}
 
 class ImageUploader(bucketName: String) {
 
@@ -22,9 +23,21 @@ class ImageUploader(bucketName: String) {
         metadata.setContentType("image/png")
         val upload = transferManager.upload(bucketName, imageName, new ByteArrayInputStream(rawImage), metadata)
 
-        Future {
-          upload.waitForUploadResult()
-        }
+        val promise = Promise[Unit]()
+
+        upload.addProgressListener(new ProgressListener {
+          override def progressChanged(progressEvent: ProgressEvent): Unit = {
+            progressEvent.getEventType match {
+              case ProgressEventType.TRANSFER_FAILED_EVENT => promise.failure(new Exception(s"Transfer of $imageName failed"))
+              case ProgressEventType.TRANSFER_CANCELED_EVENT => promise.failure(new Exception(s"Transfer of $imageName canceled"))
+              case ProgressEventType.TRANSFER_COMPLETED_EVENT => promise.success(())
+              case _ => ()
+            }
+          }
+        })
+
+        promise.future
+
     }).map(_ => ())
     uploadResult.onComplete {
       case _ => transferManager.shutdownNow()
