@@ -46,11 +46,10 @@ class ImageUploader(bucketName: String)(implicit logger: SodexoLogger) {
         promise.future
 
     }).map(_ => ())
-    uploadResult.onComplete {
+    uploadResult.andThen {
       case _ =>
         logger.log("Shutting down..")
         transferManager.shutdownNow()
     }
-    uploadResult
   }
 }
