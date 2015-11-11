@@ -10,6 +10,6 @@ class LoggerWrapper(lambdaLogger: LambdaLogger) extends SodexoLogger {
   override def log(message: String): Unit = lambdaLogger.log(message)
 }
 
-class SoutLogger extends SodexoLogger {
+class StdoutLogger extends SodexoLogger {
   override def log(message: String): Unit = println(message)
 }

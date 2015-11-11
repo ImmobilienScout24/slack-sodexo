@@ -10,10 +10,11 @@ import akka.stream.ActorMaterializer
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class MenuDownloader(http: HttpExt, logger: SodexoLogger)(implicit val actorMaterializer: ActorMaterializer, executionContext: ExecutionContext) {
+class MenuDownloader(http: HttpExt)(implicit val actorMaterializer: ActorMaterializer, executionContext: ExecutionContext, logger: SodexoLogger) {
 
 
   def download(): Future[Array[Byte]] = {
+    logger.log("Downloading menu")
     val week = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
 
     val request: HttpRequest = HttpRequest(
@@ -25,7 +26,10 @@ class MenuDownloader(http: HttpExt, logger: SodexoLogger)(implicit val actorMate
       .flatMap {
         handleErrorResponse(request)
       }
-      .flatMap(response => Unmarshal(response.entity).to[Array[Byte]])
+      .flatMap{ response =>
+        logger.log("Downloaded menu successfully")
+        Unmarshal(response.entity).to[Array[Byte]]
+      }
 
   }
 

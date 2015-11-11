@@ -12,7 +12,8 @@ object PngCropper {
   val tileWidth = 641
   val tileHeight = 1392
 
-  def extractWeekdays(img: BufferedImage): Map[String, Array[Byte]] = {
+  def extractWeekdays(img: BufferedImage)(implicit logger: SodexoLogger): Map[String, Array[Byte]] = {
+    logger.log("Extracting weekdays from image")
     val offsets = (0 to 4).map { factor => xOffset + factor * tileWidth }
     weekdays.zip(offsets).map {
       case (day, offset) =>

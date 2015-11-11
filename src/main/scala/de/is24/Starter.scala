@@ -16,8 +16,9 @@ object Starter extends App {
   implicit val ec = actorSystem.dispatcher
   implicit val materializer = ActorMaterializer()
   val http = Http()
+  implicit val logger = new StdoutLogger
 
-  val downloader = new MenuDownloader(http, new SoutLogger)
+  val downloader = new MenuDownloader(http)
 
   val image = Await.result(downloader.download().map(PdfToImageConverter.convert), 25.seconds)
   val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream()

@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 class Sodexo {
   def handleCall(param: util.LinkedHashMap[String, Object], context: Context): java.util.Map[String, String] = {
     val bucketName = "sodexo-slack"
-    val logger = context.getLogger
+    implicit val logger: SodexoLogger = new LoggerWrapper(context.getLogger)
     logger.log(s"received : ${param.asScala}")
 
     implicit val actorSystem = ActorSystem("default")
@@ -23,7 +23,7 @@ class Sodexo {
     implicit val materializer = ActorMaterializer()
     val http = Http()
 
-    val downloader = new MenuDownloader(http, new LoggerWrapper(logger))
+    val downloader = new MenuDownloader(http)
     try {
       Await.result(
         downloader.download()

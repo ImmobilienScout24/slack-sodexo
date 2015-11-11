@@ -9,9 +9,10 @@ import com.amazonaws.services.s3.transfer.TransferManager
 
 import scala.concurrent.{Promise, ExecutionContext, Future}
 
-class ImageUploader(bucketName: String) {
+class ImageUploader(bucketName: String)(implicit logger: SodexoLogger) {
 
   def uploadImages(imageNamesToRaw: Map[String, Array[Byte]])(implicit ec: ExecutionContext): Future[Unit] = {
+    logger.log(s"Uploading ${imageNamesToRaw.keys.toSeq}")
     val transferManager = new TransferManager(new DefaultAWSCredentialsProviderChain().getCredentials)
 
     val uploadResult = Future.sequence(imageNamesToRaw.map {
@@ -28,9 +29,15 @@ class ImageUploader(bucketName: String) {
         upload.addProgressListener(new ProgressListener {
           override def progressChanged(progressEvent: ProgressEvent): Unit = {
             progressEvent.getEventType match {
-              case ProgressEventType.TRANSFER_FAILED_EVENT => promise.tryFailure(new Exception(s"Transfer of $imageName failed"))
-              case ProgressEventType.TRANSFER_CANCELED_EVENT => promise.tryFailure(new Exception(s"Transfer of $imageName canceled"))
-              case ProgressEventType.TRANSFER_COMPLETED_EVENT => promise.success(())
+              case ProgressEventType.TRANSFER_FAILED_EVENT =>
+                logger.log(s"Transfer of $imageName failed")
+                promise.tryFailure(new Exception(s"Transfer of $imageName failed"))
+              case ProgressEventType.TRANSFER_CANCELED_EVENT =>
+                logger.log(s"Transfer of $imageName canceled by someone™")
+                promise.tryFailure(new Exception(s"Transfer of $imageName canceled"))
+              case ProgressEventType.TRANSFER_COMPLETED_EVENT =>
+                logger.log(s"Transfer of $imageName successful")
+                promise.success(())
               case _ => ()
             }
           }
