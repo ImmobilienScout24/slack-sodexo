@@ -1,0 +1,25 @@
+{
+    "Version": "2012-10-17",
+    "Id": "SodexoBucketPolicy",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::285072396330:role/lambda_basic_execution"
+            },
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::sodexo-slack",
+                "arn:aws:s3:::sodexo-slack/*"
+            ]
+        },
+        {
+            "Sid": "AddPerm",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::sodexo-slack/*"
+        }
+    ]
+}

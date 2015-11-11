@@ -9,6 +9,8 @@ echo "Build binary"
 sh sbt assembly
 echo "create bucket"
 aws --region eu-west-1 s3 mb "s3://sodexo-slack" || echo "Bucket already exists"
+aws s3api put-bucket-policy --bucket "sodexo-slack" --policy "file://bucketPolicy.json"
+
 echo "upload update function $functionName"
 aws s3 cp "target/scala-2.11/slack-sodexo-assembly-0.1.1-SNAPSHOT.jar" "s3://sodexo-slack/sodexo.jar"
 
