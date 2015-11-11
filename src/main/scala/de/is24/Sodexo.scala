@@ -32,6 +32,7 @@ class Sodexo {
           .map(new ImageUploader(bucketName).uploadImages),
         3 minutes)
     } finally {
+      logger.log("Shutting down system")
       actorSystem.shutdown()
       actorSystem.awaitTermination()
     }
