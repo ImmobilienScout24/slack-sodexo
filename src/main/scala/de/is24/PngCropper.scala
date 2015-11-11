@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream
 import org.apache.pdfbox.util.ImageIOUtil
 
 object PngCropper {
-  val weekdays = Seq("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag")
+  val weekdays = Seq("monday", "tuesday", "wednesday", "thursday", "friday")
   val xOffset = 1226
   val yOffset = 1354
   val tileWidth = 641
