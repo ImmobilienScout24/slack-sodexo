@@ -19,7 +19,7 @@ exports.handler = function(event, context) {
         }
         ],
         "response_type": "in_channel",
-        "text": "Aktuelles Menue"
+        "text": "Aktuelles Menü (brought to you by S.H.I.E.L.D.)"
     }
     
     context.succeed(attachment);
