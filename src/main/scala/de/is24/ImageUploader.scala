@@ -47,7 +47,9 @@ class ImageUploader(bucketName: String)(implicit logger: SodexoLogger) {
 
     }).map(_ => ())
     uploadResult.onComplete {
-      case _ => transferManager.shutdownNow()
+      case _ =>
+        logger.log("Shutting down..")
+        transferManager.shutdownNow()
     }
     uploadResult
   }
