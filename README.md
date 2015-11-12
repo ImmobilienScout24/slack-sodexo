@@ -18,10 +18,21 @@ A scheduled lambda functions downloads the menu PDF once a week, splits it into 
 Another lambda functions sits behind an AWS API GET method gateway (with template mapping because slack's API sucks) and responds to slack slash command requests for sodexo.
 
 ## Important notice
-In AWS API Gateway, you need to use the following mapping for your GET method:
+In AWS API Gateway, we recommend the following mapping for your GET method:
 
 ```javascript
-{ "response_url": "$input.params('response_url')" }
+{
+"response_url": "$input.params.response_url",
+"token": "$input.params.token",
+"team_id": "$input.params.team_id",
+"team_domain": "$input.params.team_domain",
+"channel_id": "$input.params.channel_id",
+"channel_name": "$input.params.channel_name",
+"user_id": "$input.params.user_id",
+"user_name": "$input.params.user_name",
+"command": "$input.params.command",
+"text": "$input.params.text"
+}
 ```
 
 POST doesn't work because the gateway expects valid JSON, and slack POSTs plain text. Our solution is to use GET with query parameters and create JSON from the `response_url` query parameter.
