@@ -1,15 +1,20 @@
 exports.handler = function(event, context) {
-    var d = new Date();
-    var weekdays = new Array(7);
-    weekdays[0]=  "sunday";
-    weekdays[1] = "monday";
-    weekdays[2] = "tuesday";
-    weekdays[3] = "wednesday";
-    weekdays[4] = "thursday";
-    weekdays[5] = "friday";
-    weekdays[6] = "saturday";
+    var d = new Date()
+    var weekdays = new Array(7)
+    weekdays[0]=  "sunday"
+    weekdays[1] = "monday"
+    weekdays[2] = "tuesday"
+    weekdays[3] = "wednesday"
+    weekdays[4] = "thursday"
+    weekdays[5] = "friday"
+    weekdays[6] = "saturday"
 
-    var weekday = weekdays[d.getDay()];
+    var weekday = ""
+    if(event.text !== undefined && event.text !== "" && event.text !== null) {
+        weekday = event.text.toLowerCase()
+    } else {
+        weekday = weekdays[d.getDay()]
+    }
 
     var attachment = {
         "attachments": [
@@ -19,8 +24,8 @@ exports.handler = function(event, context) {
         }
         ],
         "response_type": "in_channel",
-        "text": "Aktuelles Menü (brought to you by S.H.I.E.L.D.)"
+        "text": "Canteen menu for " + weekday + " (brought to you by S.H.I.E.L.D.)"
     }
-    
-    context.succeed(attachment);
-};
+
+    context.succeed(attachment)
+}
