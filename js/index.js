@@ -33,8 +33,14 @@ exports.handler = function(event, context) {
         "text": event.user_name + " fails at weekdays. '" + weekday + "' is not a valid weekday, please ask your colleagues about valid values."
     }
 
-    if(weekdays.indexOf(weekday) >= 0){
-        context.succeed(attachment)
+    var spammer = {
+        "response_type": "ephemeral",
+        "text": "Please don't use the sodexo command in #general."
     }
-    context.succeed(invalidWeekday)
+
+    if(event.channel_name === "general"){
+        context.succeed(spammer)
+    }else if(weekdays.indexOf(weekday) >= 0){
+        context.succeed(attachment)
+    } else context.succeed(invalidWeekday)
 }
