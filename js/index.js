@@ -1,4 +1,5 @@
 exports.handler = function(event, context) {
+    console.log("got event: " + JSON.stringify(event))
     var d = new Date()
     var weekdays = new Array(7)
     weekdays[0]=  "sunday"
@@ -19,7 +20,7 @@ exports.handler = function(event, context) {
     var attachment = {
         "attachments": [
         {
-            "fallback": "No food today",
+            "fallback": "IS24 canteen menu for " + weekday,
             "image_url": "https://s3-eu-west-1.amazonaws.com/sodexo-slack/" + weekday + ".png"
         }
         ],
@@ -27,5 +28,13 @@ exports.handler = function(event, context) {
         "text": "Canteen menu for " + weekday + " (brought to you by S.H.I.E.L.D.)"
     }
 
-    context.succeed(attachment)
+    var invalidWeekday = {
+        "response_type": "in_channel",
+        "text": event.user_name + " fails at weekdays. " + weekday + " is not a valid weekday, please ask your colleagues about valid values."
+    }
+
+    if(weekdays.indexOf(weekday) >= 0){
+        context.succeed(attachment)
+    }
+    context.succeed(invalidWeekday)
 }
