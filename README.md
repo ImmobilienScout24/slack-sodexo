@@ -22,16 +22,16 @@ In AWS API Gateway, we recommend the following mapping for your GET method:
 
 ```javascript
 {
-"response_url": "$input.params.response_url",
-"token": "$input.params.token",
-"team_id": "$input.params.team_id",
-"team_domain": "$input.params.team_domain",
-"channel_id": "$input.params.channel_id",
-"channel_name": "$input.params.channel_name",
-"user_id": "$input.params.user_id",
-"user_name": "$input.params.user_name",
-"command": "$input.params.command",
-"text": "$input.params.text"
+"response_url": "$input.params().querystring.response_url",
+"token": "$input.params().querystring.token",
+"team_id": "$input.params().querystring.team_id",
+"team_domain": "$input.params().querystring.team_domain",
+"channel_id": "$input.params().querystring.channel_id",
+"channel_name": "$input.params().querystring.channel_name",
+"user_id": "$input.params().querystring.user_id",
+"user_name": "$input.params().querystring.user_name",
+"command": "$input.params().querystring.command",
+"text": "$input.params().querystring.text"
 }
 ```
 
