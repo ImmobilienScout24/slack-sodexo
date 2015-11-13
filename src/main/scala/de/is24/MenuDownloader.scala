@@ -15,10 +15,10 @@ class MenuDownloader(http: HttpExt)(implicit val actorMaterializer: ActorMateria
 
   def download(): Future[Array[Byte]] = {
     logger.log("Downloading menu")
-    val week = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+    val nextWeek: Int = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) + 1
 
     val request: HttpRequest = HttpRequest(
-      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/Speiseplan%20KW%20$week.pdf",
+      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/Speiseplan%20KW%20$nextWeek.pdf",
       method = HttpMethods.GET
     )
 
