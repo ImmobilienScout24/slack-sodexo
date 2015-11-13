@@ -2,6 +2,8 @@ package de.is24
 
 import java.io.ByteArrayOutputStream
 import java.nio.file.{Files, StandardOpenOption, Paths}
+import java.time.ZonedDateTime
+import java.time.temporal.IsoFields
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -17,8 +19,10 @@ object Starter extends App {
   implicit val materializer = ActorMaterializer()
   val http = Http()
   implicit val logger = new StdoutLogger
+  val week: Int = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
 
-  val downloader = new MenuDownloader(http)
+
+  val downloader = new MenuDownloader(http, week)
 
   val image = Await.result(downloader.download().map(PdfToImageConverter.convert), 25.seconds)
   val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream()
@@ -32,7 +36,7 @@ object Starter extends App {
       Files.write(Paths.get(imagename), bytes, StandardOpenOption.CREATE)
   }
 
-  val imgUploader = new ImageUploader("sodexo-slack")
+  val imgUploader = new ImageUploader("sodexo-slack", week)
   Await.result(imgUploader.uploadImages(weekdayImages), 2 minutes)
 
   actorSystem.shutdown()

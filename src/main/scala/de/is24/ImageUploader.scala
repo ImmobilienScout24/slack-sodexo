@@ -9,7 +9,7 @@ import com.amazonaws.services.s3.transfer.TransferManager
 
 import scala.concurrent.{Promise, ExecutionContext, Future}
 
-class ImageUploader(bucketName: String)(implicit logger: SodexoLogger) {
+class ImageUploader(bucketName: String, week: Int)(implicit logger: SodexoLogger) {
 
   def uploadImages(imageNamesToRaw: Map[String, Array[Byte]])(implicit ec: ExecutionContext): Future[Unit] = {
     logger.log(s"Uploading ${imageNamesToRaw.keys.toSeq}")
@@ -22,7 +22,7 @@ class ImageUploader(bucketName: String)(implicit logger: SodexoLogger) {
         val metadata = new ObjectMetadata()
         metadata.setContentLength(rawImage.length)
         metadata.setContentType("image/png")
-        val upload = transferManager.upload(bucketName, imageName, new ByteArrayInputStream(rawImage), metadata)
+        val upload = transferManager.upload(bucketName, s"${week}_$imageName", new ByteArrayInputStream(rawImage), metadata)
 
         val promise = Promise[Unit]()
 
