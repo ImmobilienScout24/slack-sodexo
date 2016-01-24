@@ -1,5 +1,4 @@
 #!/bin/bash
-CFN_PARAMS="--region eu-west-1 --stack-name utm-dev-25 --template-body file://templates/utm.json --parameters ParameterKey=stage,ParameterValue=dev25 ParameterKey=locName,ParameterValue=dev"
 
 source with-afp-credentials-and-aws-tools.sh
 
