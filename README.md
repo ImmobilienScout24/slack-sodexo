@@ -15,7 +15,7 @@ in a channel will attach a picture with today's menu.
 # Technical details
 A scheduled lambda functions downloads the menu PDF once a week, splits it into daily menus and uploads those to S3.
 
-Another lambda functions sits behind an AWS API GET method gateway (with template mapping because slack's API sucks) and responds to slack slash command requests for sodexo.
+Another lambda functions sits behind an AWS API GET method gateway (with template mapping) and responds to slack slash command requests for sodexo.
 
 ## Important notice
 In AWS API Gateway, we recommend the following mapping for your GET method:
