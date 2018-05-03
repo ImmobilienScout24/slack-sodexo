@@ -53,7 +53,7 @@ exports.handler = function(event, context) {
       }
     ],
     "response_type": "in_channel",
-    "text": "Canteen menu for " + weekday + " (brought to you by S.H.I.E.L.D.)"
+    "text": "Canteen menu for " + weekday + " (brought to you by Shield)"
   }
 
   var invalidWeekday = {

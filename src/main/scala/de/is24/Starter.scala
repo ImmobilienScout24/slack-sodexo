@@ -20,7 +20,7 @@ object Starter extends App {
   val http = Http()
   implicit val logger = new StdoutLogger
   val week: Int = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
-
+  logger.log(s"Proceeding for week $week")
 
   val downloader = new MenuDownloader(http, week)
 
