@@ -1,6 +1,6 @@
 #!/bin/bash
 
-script=$(greadlink -f "$0")
+script=$(readlink -f "$0")
 
 scriptdir=$(dirname "$script")
 
