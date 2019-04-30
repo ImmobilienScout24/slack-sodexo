@@ -20,7 +20,7 @@ trait Dependencies {
   val appDependencies = Seq(
     "com.jsuereth" %% "scala-arm" % "1.4",
     "com.amazonaws" % "aws-lambda-java-core" % "1.2.0",
-    "com.amazonaws" % "aws-java-sdk" % "1.11.541" excludeAll ExclusionRule(organization = "io.netty"),
+    "com.amazonaws" % "aws-java-sdk-s3" % "1.11.541" excludeAll ExclusionRule(organization = "io.netty"),
     "com.typesafe.akka" %% "akka-stream-experimental" % "1.0",
     "com.typesafe.akka" %% "akka-http-core-experimental" % "1.0",
     "com.typesafe.akka" %% "akka-http-experimental" % "1.0",
