@@ -1,11 +1,8 @@
 package de.is24
 
-import java.time.ZonedDateTime
-import java.time.temporal.IsoFields
-
+import akka.http.scaladsl.HttpExt
+import akka.http.scaladsl.model.{HttpMethods, HttpRequest, HttpResponse}
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.http.scaladsl.{HttpExt, Http}
-import akka.http.scaladsl.model.{HttpResponse, HttpMethods, HttpRequest}
 import akka.stream.ActorMaterializer
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -18,7 +15,8 @@ class MenuDownloader(http: HttpExt, week: Int)(implicit val actorMaterializer: A
     val weekWithLeadingZeroIfNecessary = f"$week%02d"
 
     val request: HttpRequest = HttpRequest(
-      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/Speiseplan%20$weekWithLeadingZeroIfNecessary.Kw.pdf",
+      //      https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/18.KW%20Speiseplan.pdf
+      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/$weekWithLeadingZeroIfNecessary.KW%20Speiseplan.pdf",
       method = HttpMethods.GET
     )
 
