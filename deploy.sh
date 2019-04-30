@@ -4,7 +4,7 @@ functionName="Sodexo"
 slackFunctionName="sodexo-slack-command"
 
 echo "Build binary"
-sbt assembly
+./sbt assembly
 echo "create bucket"
 aws --region eu-west-1 s3 mb "s3://sodexo-slack" || echo "Bucket already exists"
 aws s3api put-bucket-policy --bucket "sodexo-slack" --policy "file://bucketPolicy.json"
