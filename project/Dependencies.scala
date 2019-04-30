@@ -19,12 +19,12 @@ trait Dependencies {
 
   val appDependencies = Seq(
     "com.jsuereth" %% "scala-arm" % "1.4",
-    "com.amazonaws" % "aws-lambda-java-core" % "1.1.0",
-    "com.amazonaws" % "aws-java-sdk" % "1.9.36",
+    "com.amazonaws" % "aws-lambda-java-core" % "1.2.0",
+    "com.amazonaws" % "aws-java-sdk" % "1.11.541",
     "com.typesafe.akka" %% "akka-stream-experimental" % "1.0",
     "com.typesafe.akka" %% "akka-http-core-experimental" % "1.0",
     "com.typesafe.akka" %% "akka-http-experimental" % "1.0",
     "de.heikoseeberger" %% "akka-http-play-json" % "1.1.0",
-    "org.apache.pdfbox" % "pdfbox" % "1.8.10"
+    "org.apache.pdfbox" % "pdfbox" % "1.8.16"
   )
 }
