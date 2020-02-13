@@ -16,7 +16,7 @@ class MenuDownloader(http: HttpExt, week: Int)(implicit val actorMaterializer: A
 
     val request: HttpRequest = HttpRequest(
       //      https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/18.KW%20Speiseplan.pdf
-      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/$weekWithLeadingZeroIfNecessary.KW%20Speiseplan.pdf",
+      uri = s"https://www.sodexo-scoutlounge.de/assets/context/sodexo-scoutlounge/$week.KW%20Speiseplan.pdf",
       method = HttpMethods.GET
     )
 
